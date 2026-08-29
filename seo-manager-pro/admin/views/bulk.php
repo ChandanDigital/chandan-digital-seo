@@ -1,0 +1,1 @@
+<div class="seom-panel"><h2>Bulk SEO Editor</h2><p>Edit SEO titles, descriptions and focus keywords without opening each post.</p><div id="seom-bulk-editor"></div><button type="button" class="button button-primary" id="seom-load-bulk">Load Content</button></div>

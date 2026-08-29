@@ -1,0 +1,3 @@
+<?php
+if (!defined('ABSPATH')) exit;
+final class SEO_Manager_Image_SEO {public static function init():void{add_action('admin_menu',[__CLASS__,'menu']);add_action('wp_ajax_seom_image_scan',[__CLASS__,'scan']);}public static function menu():void{}public static function scan():void{check_ajax_referer('seom_admin','nonce');if(!current_user_can('manage_options'))wp_send_json_error();$ids=get_posts(['post_type'=>'attachment','post_status'=>'inherit','post_mime_type'=>'image','posts_per_page'=>100,'fields'=>'ids']);$out=[];foreach($ids as $id){$alt=get_post_meta($id,'_wp_attachment_image_alt',true);if($alt==='')$out[]=['id'=>$id,'title'=>get_the_title($id),'url'=>wp_get_attachment_url($id)];}wp_send_json_success(['count'=>count($out),'items'=>$out]);}}
