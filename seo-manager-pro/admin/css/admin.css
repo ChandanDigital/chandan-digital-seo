@@ -1,0 +1,540 @@
+/* =========================================================================
+   Chandan Digital SEO — Admin UI
+   ========================================================================= */
+
+.seom-wrap{
+  --seom-primary:#4338ca;
+  --seom-primary-light:#6366f1;
+  --seom-primary-dark:#2f2a8f;
+  --seom-accent:#06b6d4;
+  --seom-bg:#f4f5fb;
+  --seom-surface:#ffffff;
+  --seom-border:#e5e7f3;
+  --seom-border-soft:#eef0f9;
+  --seom-text:#1c2033;
+  /* Both muted tones are kept at or above the WCAG AA 4.5:1 ratio against the
+     white surface. --seom-text-faint was #9498ad, which measured only 2.86:1
+     and made small captions, counters and card sub-labels hard to read. */
+  --seom-text-muted:#6b7089;
+  --seom-text-faint:#6f7488;
+  --seom-success:#0f9d58;
+  --seom-success-bg:#e6f8ee;
+  --seom-warn:#b5720a;
+  --seom-warn-bg:#fff6de;
+  --seom-danger:#d1373f;
+  --seom-danger-bg:#fdeaec;
+  --seom-radius-lg:16px;
+  --seom-radius:12px;
+  --seom-radius-sm:8px;
+  --seom-shadow:0 1px 2px rgba(20,20,60,.04),0 10px 26px -14px rgba(30,30,90,.18);
+  --seom-shadow-hover:0 16px 34px -14px rgba(67,56,202,.32);
+  max-width:1440px;
+  color:var(--seom-text);
+  font-variant-numeric:tabular-nums;
+}
+.seom-wrap *{box-sizing:border-box}
+.seom-wrap h1,.seom-wrap h2,.seom-wrap h3{color:var(--seom-text);letter-spacing:-.01em}
+.seom-wrap a{color:var(--seom-primary)}
+.seom-wrap code{background:#f0f1fa;padding:2px 6px;border-radius:5px;font-size:12px}
+
+/* ---------------------------------------------------------------------
+   Brand bar
+   --------------------------------------------------------------------- */
+.seom-brandbar{
+  display:flex;align-items:center;gap:16px;justify-content:space-between;
+  background:linear-gradient(120deg,#241f5e 0%,#4338ca 46%,#6d5bf0 100%);
+  border-radius:var(--seom-radius-lg);
+  padding:20px 26px;
+  margin:18px 0 20px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  box-shadow:var(--seom-shadow);
+}
+.seom-brandbar::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(320px 180px at 92% -30%,rgba(255,255,255,.20),transparent 60%),
+    radial-gradient(260px 200px at 105% 120%,rgba(6,182,212,.35),transparent 60%);
+}
+.seom-brandbar>*{position:relative;z-index:1}
+.seom-brandcopy{display:flex;align-items:center;gap:14px;flex:1;min-width:0}
+.seom-brandmark{
+  width:44px;height:44px;flex:0 0 44px;border-radius:12px;
+  background:linear-gradient(135deg,#06b6d4,#818cf8);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:16px;letter-spacing:.02em;color:#101235;
+  box-shadow:0 6px 16px -4px rgba(0,0,0,.35);
+}
+.seom-brandname{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.8);font-weight:700}
+.seom-productname{font-size:17px;font-weight:700;line-height:1.25;color:#fff}
+.seom-brandtag{font-size:12.5px;color:rgba(255,255,255,.72);margin-top:1px}
+.seom-brandmeta{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.seom-pill{
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);
+  color:#fff;padding:5px 12px;border-radius:999px;
+  font-size:11.5px;font-weight:700;letter-spacing:.03em;
+}
+.seom-site-link{
+  background:#fff;color:var(--seom-primary-dark)!important;
+  padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;
+  text-decoration:none;transition:transform .15s ease,box-shadow .15s ease;
+  box-shadow:0 4px 10px -4px rgba(0,0,0,.3);
+}
+.seom-site-link:hover{transform:translateY(-1px);box-shadow:0 8px 18px -6px rgba(0,0,0,.4)}
+
+/* ---------------------------------------------------------------------
+   App shell: sidebar + main
+   --------------------------------------------------------------------- */
+.seom-app-grid{display:grid;grid-template-columns:246px 1fr;gap:22px;align-items:start}
+.seom-internal-sidebar{
+  position:sticky;top:42px;
+  background:var(--seom-surface);
+  border:1px solid var(--seom-border);
+  border-radius:var(--seom-radius-lg);
+  padding:10px;
+  display:flex;flex-direction:column;gap:2px;
+  box-shadow:var(--seom-shadow);
+}
+.seom-side-home,.seom-side-group{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--seom-radius-sm);
+  color:var(--seom-text-muted);text-decoration:none;font-size:13.5px;font-weight:600;
+  transition:background .14s ease,color .14s ease;
+  position:relative;
+}
+.seom-side-home .dashicons,.seom-side-group .dashicons{font-size:18px;width:18px;height:18px;opacity:.85}
+.seom-side-home{margin-bottom:8px;color:var(--seom-text);background:var(--seom-bg)}
+.seom-side-home:hover{background:#ecedf9;color:var(--seom-text)}
+.seom-side-group:hover{background:#f2f2fb;color:var(--seom-primary)}
+.seom-side-group.active{
+  background:linear-gradient(90deg,rgba(67,56,202,.10),rgba(67,56,202,.04));
+  color:var(--seom-primary-dark);
+}
+.seom-side-group.active::before{
+  content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:3px;
+  background:linear-gradient(180deg,var(--seom-primary-light),var(--seom-accent));
+}
+.seom-side-group.active .dashicons{opacity:1;color:var(--seom-primary)}
+
+.seom-app-main{min-width:0}
+
+/* ---------------------------------------------------------------------
+   Section heading + subnav
+   --------------------------------------------------------------------- */
+.seom-section-heading{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  margin-bottom:14px;
+}
+.seom-section-heading h1{margin:2px 0 4px;font-size:23px}
+.seom-section-heading p{margin:0;color:var(--seom-text-muted);font-size:13.5px;max-width:560px}
+.seom-eyebrow{
+  display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;
+  color:var(--seom-primary);text-transform:uppercase;
+}
+
+.seom-subnav{
+  display:flex;gap:4px;flex-wrap:wrap;
+  background:var(--seom-surface);
+  border:1px solid var(--seom-border);
+  border-radius:999px;
+  padding:5px;margin-bottom:18px;
+  box-shadow:var(--seom-shadow);
+  width:fit-content;max-width:100%;overflow:auto;
+}
+.seom-subnav a{
+  padding:8px 16px;border-radius:999px;text-decoration:none;
+  font-size:13px;font-weight:600;color:var(--seom-text-muted);
+  white-space:nowrap;transition:background .15s ease,color .15s ease;
+}
+.seom-subnav a:hover{color:var(--seom-text);background:var(--seom-bg)}
+.seom-subnav a.active{
+  color:#fff;
+  background:linear-gradient(120deg,var(--seom-primary),var(--seom-primary-light));
+  box-shadow:0 6px 14px -6px rgba(67,56,202,.55);
+}
+
+/* legacy top tabs (kept for compatibility) */
+.seom-tabs{display:flex;gap:6px;overflow:auto;border-bottom:1px solid var(--seom-border);margin-bottom:18px;padding-bottom:0}
+.seom-tabs a{padding:11px 13px;text-decoration:none;color:var(--seom-text-muted);border:1px solid transparent;border-bottom:0;white-space:nowrap;font-weight:600;font-size:13px}
+.seom-tabs a.active{background:#fff;border-color:var(--seom-border);border-radius:8px 8px 0 0;color:var(--seom-text);font-weight:700}
+
+.seom-content-stack{display:flex;flex-direction:column;gap:0}
+
+.seom-header{display:flex;justify-content:space-between;align-items:flex-start;margin:20px 0}
+.seom-header h1{margin-bottom:4px}
+.seom-header p{margin-top:0;color:var(--seom-text-muted)}
+.seom-version{background:var(--seom-bg);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}
+
+/* ---------------------------------------------------------------------
+   Hero banners (dashboard + Google/indexing intro cards)
+   --------------------------------------------------------------------- */
+/* The hero markup is written as class="seom-panel seom-google-hero", and
+   .seom-panel (defined further down this file) sets a white background at the
+   same specificity — so the later .seom-panel rule was winning and flattening
+   the hero to white while its child text kept color:#fff, rendering the
+   heading, body copy and status pill invisible. The compound
+   .seom-panel.seom-hero / .seom-panel.seom-google-hero selectors raise the
+   specificity so the hero keeps its gradient regardless of rule order, while
+   the bare class selectors keep standalone hero markup working. */
+.seom-hero,.seom-google-hero,
+.seom-panel.seom-hero,.seom-panel.seom-google-hero{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  background:linear-gradient(120deg,#312a86 0%,#4338ca 55%,#4f8ef0 100%);
+  color:#fff;border-radius:var(--seom-radius-lg);
+  border:1px solid transparent;
+  padding:26px 28px;margin:0 0 20px;position:relative;overflow:hidden;
+  box-shadow:var(--seom-shadow);
+}
+.seom-hero::after,.seom-google-hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(360px 220px at 100% 0%,rgba(6,182,212,.35),transparent 62%);
+}
+.seom-hero>*,.seom-google-hero>*{position:relative;z-index:1}
+.seom-hero h1,.seom-hero h2,.seom-google-hero h1,.seom-google-hero h2,
+.seom-panel.seom-hero h1,.seom-panel.seom-hero h2,
+.seom-panel.seom-google-hero h1,.seom-panel.seom-google-hero h2{color:#fff;margin:2px 0 6px;font-size:22px}
+.seom-hero p,.seom-google-hero p{color:rgba(255,255,255,.82);margin:0;max-width:600px;font-size:13.5px;line-height:1.55}
+.seom-hero .seom-eyebrow,.seom-google-hero .seom-eyebrow{color:#a9ffee}
+/* Inline <code> inside a hero sits on the dark gradient, so the light global
+   code chip styling would be unreadable there. */
+.seom-hero code,.seom-google-hero code{background:rgba(255,255,255,.16);color:#eef0ff}
+
+.seom-score-orb{
+  --score:70;
+  width:88px;height:88px;border-radius:50%;flex:0 0 auto;
+  background:conic-gradient(#37e0a0 calc(var(--score)*1%),rgba(255,255,255,.18) 0);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 20px -6px rgba(0,0,0,.35);
+}
+.seom-score-orb::before{
+  content:"";position:absolute;
+}
+.seom-score-orb{position:relative}
+.seom-score-orb strong{
+  position:relative;z-index:1;
+  width:68px;height:68px;border-radius:50%;background:#221d5c;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:800;color:#fff;
+}
+.seom-score-orb span{
+  position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.85);
+  white-space:nowrap;
+}
+
+.seom-google-status{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);
+  padding:7px 14px;border-radius:999px;font-size:12.5px;font-weight:700;color:#fff;
+}
+.seom-google-status::before{content:"";width:7px;height:7px;border-radius:50%;background:#ffb545}
+.seom-google-status.connected::before{background:#37e0a0}
+.seom-google-status.connected{background:rgba(55,224,160,.18);border-color:rgba(55,224,160,.4)}
+
+/* ---------------------------------------------------------------------
+   Stat cards
+   --------------------------------------------------------------------- */
+.seom-cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.seom-card,.seom-panel{
+  background:var(--seom-surface);
+  border:1px solid var(--seom-border);
+  border-radius:var(--seom-radius);
+  padding:18px 20px;
+  box-shadow:var(--seom-shadow);
+}
+.seom-card{
+  position:relative;overflow:hidden;
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.seom-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--seom-primary-light),var(--seom-accent));
+}
+.seom-card:hover{transform:translateY(-2px);box-shadow:var(--seom-shadow-hover)}
+.seom-card span{display:block;color:var(--seom-text-muted);font-size:12.5px;font-weight:600}
+.seom-card strong{display:block;font-size:26px;margin-top:8px;font-weight:800;color:var(--seom-text)}
+.seom-card small{display:block;margin-top:4px;color:var(--seom-text-faint);font-size:11.5px}
+
+.seom-panel{margin-bottom:18px}
+.seom-panel h2{font-size:16px;margin-top:0}
+.seom-panel h3{font-size:14.5px;margin-top:0}
+.seom-two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:0}
+
+.seom-dashboard-title{font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--seom-text-muted);margin:26px 0 12px;font-weight:800}
+
+/* ---------------------------------------------------------------------
+   Module grid (dashboard + section overview cards)
+   --------------------------------------------------------------------- */
+.seom-module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.seom-module-grid-2{grid-template-columns:repeat(3,minmax(0,1fr))}
+.seom-module-card{
+  display:flex;flex-direction:column;gap:6px;
+  background:var(--seom-surface);border:1px solid var(--seom-border);
+  border-radius:var(--seom-radius);padding:18px;text-decoration:none;
+  box-shadow:var(--seom-shadow);
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+}
+.seom-module-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--seom-shadow-hover);
+  border-color:rgba(67,56,202,.35);
+}
+.seom-module-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(67,56,202,.12),rgba(6,182,212,.14));
+  color:var(--seom-primary);font-size:18px;margin-bottom:4px;
+}
+.seom-module-card b{font-size:14.5px;color:var(--seom-text)}
+.seom-module-card>span{font-size:12.5px;color:var(--seom-text-muted);line-height:1.5}
+.seom-module-card em{
+  font-style:normal;font-size:12px;font-weight:700;color:var(--seom-primary);
+  margin-top:6px;transition:transform .15s ease;
+}
+.seom-module-card:hover em{transform:translateX(3px)}
+.seom-module-card-large{padding:20px}
+
+/* ---------------------------------------------------------------------
+   Forms
+   --------------------------------------------------------------------- */
+.seom-form-grid,.seom-meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px}
+.seom-form-grid label,.seom-meta-grid label,.seom-field label{display:block;font-weight:700;font-size:12.8px;color:var(--seom-text)}
+.seom-form-grid .full,.seom-meta-grid .full,.seom-full,.seom-full-label{grid-column:1/-1}
+.seom-form-grid small,.seom-meta-grid small,.seom-field small{display:block;color:var(--seom-text-muted);margin-top:5px;font-size:11.8px}
+
+.seom-wrap input[type=text],.seom-wrap input[type=url],.seom-wrap input[type=email],
+.seom-wrap input[type=password],.seom-wrap input[type=number],.seom-wrap input:not([type]),
+.seom-wrap textarea,.seom-wrap select{
+  display:block;width:100%;margin-top:7px;
+  border:1px solid var(--seom-border);border-radius:var(--seom-radius-sm);
+  padding:9px 11px;font-size:13px;background:#fff;color:var(--seom-text);
+  transition:border-color .14s ease,box-shadow .14s ease;
+}
+.seom-wrap input:focus,.seom-wrap textarea:focus,.seom-wrap select:focus{
+  border-color:var(--seom-primary-light);
+  box-shadow:0 0 0 3px rgba(99,102,241,.16);
+  outline:none;
+}
+.seom-field{margin-bottom:2px}
+.seom-counter{font-size:11.5px;color:var(--seom-text-faint);margin-top:5px}
+
+/* Toggle rows */
+.seom-toggle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 25px}
+.seom-toggle-grid label{
+  padding:12px;border:1px solid var(--seom-border);border-radius:var(--seom-radius-sm);
+  background:var(--seom-bg);font-weight:600;font-size:12.8px;display:flex;align-items:center;gap:8px;
+  transition:background .14s ease,border-color .14s ease;
+}
+.seom-toggle-grid label:hover{background:#eef0fc;border-color:rgba(67,56,202,.3)}
+
+.seom-toggle-list{display:flex;flex-direction:column;gap:8px;margin:12px 0 22px}
+.seom-toggle-row{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:13px 16px;border:1px solid var(--seom-border);border-radius:var(--seom-radius-sm);
+  background:var(--seom-surface);transition:background .14s ease,border-color .14s ease;
+}
+.seom-toggle-row:hover{background:var(--seom-bg);border-color:rgba(67,56,202,.28)}
+.seom-toggle-row span{display:flex;flex-direction:column;gap:2px}
+.seom-toggle-row strong{font-size:13px;font-weight:700}
+.seom-toggle-row small{color:var(--seom-text-muted);font-size:12px}
+.seom-toggle-row input[type=checkbox]{margin:0;flex:0 0 auto}
+.seom-toggle-row.inline{display:inline-flex;width:auto}
+
+.seom-wrap input[type=checkbox]{
+  width:17px;height:17px;accent-color:var(--seom-primary);border-radius:4px;cursor:pointer;
+}
+
+/* Segmented control / option boxes (redirect settings) */
+.seom-settings-list{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.seom-option-box{
+  border:1px solid var(--seom-border);border-radius:var(--seom-radius-sm);
+  padding:14px 16px;background:var(--seom-bg);
+}
+.seom-option-box strong{display:block;font-size:13px;margin-bottom:2px}
+.seom-option-box .description{margin:0 0 10px;color:var(--seom-text-muted);font-size:12px}
+.seom-segmented{display:flex;gap:6px;flex-wrap:wrap}
+.seom-segmented label{
+  padding:8px 14px;border:1px solid var(--seom-border);border-radius:999px;
+  background:#fff;font-size:12.5px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.seom-segmented input{width:14px;height:14px;margin:0;accent-color:var(--seom-primary)}
+
+.seom-import-format{
+  border:1px dashed var(--seom-border);border-radius:var(--seom-radius-sm);
+  padding:12px 14px;font-size:12.3px;color:var(--seom-text-muted);background:var(--seom-bg);
+  line-height:1.6;
+}
+
+/* ---------------------------------------------------------------------
+   Buttons (scoped override of WP core admin buttons)
+   --------------------------------------------------------------------- */
+.seom-wrap .button{
+  border-radius:999px!important;
+  border:1px solid var(--seom-border)!important;
+  background:#fff!important;color:var(--seom-text)!important;
+  font-weight:700!important;font-size:12.8px!important;
+  padding:6px 16px!important;height:auto!important;line-height:1.6!important;
+  box-shadow:none!important;transition:transform .12s ease,box-shadow .12s ease,background .12s ease!important;
+}
+.seom-wrap .button:hover{background:var(--seom-bg)!important;transform:translateY(-1px)}
+.seom-wrap .button-primary{
+  border:none!important;color:#fff!important;
+  background:linear-gradient(120deg,var(--seom-primary),var(--seom-primary-light))!important;
+  box-shadow:0 8px 18px -8px rgba(67,56,202,.6)!important;
+}
+.seom-wrap .button-primary:hover{
+  box-shadow:0 10px 22px -6px rgba(67,56,202,.7)!important;
+  background:linear-gradient(120deg,var(--seom-primary-dark),var(--seom-primary))!important;
+}
+.seom-wrap .button-hero{padding:11px 26px!important;font-size:13.5px!important}
+.seom-wrap .button-small{padding:4px 12px!important;font-size:11.8px!important}
+.seom-wrap .button:disabled{opacity:.55!important;cursor:default}
+
+/* ---------------------------------------------------------------------
+   Tables
+   --------------------------------------------------------------------- */
+.seom-wrap .widefat{
+  border:1px solid var(--seom-border);border-radius:var(--seom-radius);
+  overflow:hidden;border-spacing:0;box-shadow:var(--seom-shadow);
+}
+.seom-wrap .widefat thead th{
+  background:var(--seom-bg);color:var(--seom-text-muted);
+  font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:800;
+  border-bottom:1px solid var(--seom-border);padding:12px 14px;
+}
+.seom-wrap .widefat td{vertical-align:middle;padding:11px 14px;font-size:13px;border-bottom:1px solid var(--seom-border-soft)}
+.seom-wrap .widefat.striped>tbody>tr:nth-child(odd){background:#fbfbfe}
+.seom-wrap .widefat>tbody>tr:hover{background:#f2f3fc}
+.seom-table-scroll{overflow-x:auto;border-radius:var(--seom-radius);}
+.seom-table-scroll .widefat{box-shadow:none}
+
+/* ---------------------------------------------------------------------
+   Badges & status
+   --------------------------------------------------------------------- */
+.seom-badge{
+  display:inline-block;padding:4px 10px;border-radius:999px;
+  font-size:10.8px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;
+}
+.seom-badge.ok{background:var(--seom-success-bg);color:var(--seom-success)}
+.seom-badge.warn{background:var(--seom-warn-bg);color:var(--seom-warn)}
+.seom-badge.bad,.seom-badge.error{background:var(--seom-danger-bg);color:var(--seom-danger)}
+
+.seom-check{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:13px 0;border-bottom:1px solid var(--seom-border-soft)}
+.seom-check:last-child{border-bottom:none}
+.seom-check b{font-size:13px}
+.seom-check small{grid-column:1/-1;color:var(--seom-text-muted)}
+
+/* ---------------------------------------------------------------------
+   SERP preview
+   --------------------------------------------------------------------- */
+.seom-serp{
+  border:1px solid var(--seom-border);border-radius:var(--seom-radius);
+  padding:16px 18px;margin-top:18px;background:#fbfbfe;max-width:760px;
+}
+.seom-serp-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--seom-text-faint);margin-bottom:8px;font-weight:800}
+.seom-serp-title{font-size:19px;color:#1a0dab;line-height:1.3}
+.seom-serp-url{font-size:12.8px;color:#188038;margin:3px 0}
+.seom-serp-desc{font-size:13.5px;line-height:1.5;color:#4d5156}
+
+/* ---------------------------------------------------------------------
+   Analysis block
+   --------------------------------------------------------------------- */
+.seom-analysis{margin-top:18px;padding-top:18px;border-top:1px solid var(--seom-border-soft)}
+.seom-analysis-score{font-size:17px;margin-top:12px;font-weight:700}
+.seom-analysis-result{font-size:13px;color:var(--seom-text-muted);line-height:1.6}
+.seom-analysis-result ul{margin:8px 0 0;padding-left:18px}
+.seom-analysis-result li{margin-bottom:4px}
+
+/* ---------------------------------------------------------------------
+   Info grid / code blocks / API result panels
+   --------------------------------------------------------------------- */
+.seom-info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0 18px}
+.seom-info-box{
+  border:1px solid var(--seom-border);border-radius:var(--seom-radius-sm);
+  padding:13px 16px;background:var(--seom-bg);
+}
+.seom-info-box span{display:block;font-size:11px;color:var(--seom-text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:4px}
+.seom-info-box strong{font-size:14px}
+.seom-info-box a{font-size:13px;word-break:break-all}
+
+/* .seom-wrap code (0,1,1) outranked the single-class .seom-code-block (0,1,0),
+   so the block kept its light global chip background while still using the
+   light-on-dark text colour — the OAuth redirect URI rendered as pale text on
+   a pale panel. Matching the element in the selector restores the dark block. */
+code.seom-code-block,.seom-code-block{
+  display:block;background:#181737;color:#c9d1ff;border-radius:var(--seom-radius-sm);
+  padding:12px 14px;font-size:12.5px;margin:10px 0;overflow-x:auto;
+  word-break:break-all;
+}
+.seom-code-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
+.seom-code-list code{background:#181737;color:#c9d1ff;padding:6px 12px;border-radius:8px;font-size:12px}
+
+.seom-api-result{
+  background:#181737;color:#c9d1ff;border-radius:var(--seom-radius-sm);
+  padding:14px 16px;font-size:12px;line-height:1.6;overflow:auto;max-height:420px;
+}
+
+.seom-schema-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+/* ---------------------------------------------------------------------
+   Bulk editor
+   --------------------------------------------------------------------- */
+.seom-bulk-toolbar{display:flex;justify-content:flex-end;margin-bottom:12px}
+.seom-bulk-scroll{max-height:560px;overflow:auto;border-radius:var(--seom-radius)}
+
+/* ---------------------------------------------------------------------
+   Misc rows
+   --------------------------------------------------------------------- */
+.seom-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.seom-tool-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.seom-tool-row form{margin:0}
+
+/* ---------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------- */
+@media(max-width:1200px){
+  .seom-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .seom-module-grid,.seom-module-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:960px){
+  .seom-app-grid{grid-template-columns:1fr}
+  .seom-internal-sidebar{
+    position:static;flex-direction:row;overflow-x:auto;gap:6px;
+  }
+  .seom-side-home,.seom-side-group{flex:0 0 auto}
+  .seom-side-group.active::before{display:none}
+}
+@media(max-width:900px){
+  .seom-cards,.seom-two,.seom-form-grid,.seom-meta-grid,.seom-toggle-grid,.seom-schema-grid,.seom-info-grid{
+    grid-template-columns:1fr;
+  }
+  .seom-hero,.seom-google-hero{flex-direction:column;align-items:flex-start}
+  .seom-score-orb{align-self:flex-end}
+  .seom-brandbar{flex-direction:column;align-items:flex-start}
+}
+
+/* =========================================================================
+   Meta box (post/page editor sidebar) — lives outside .seom-wrap
+   ========================================================================= */
+#seom-meta-box .seom-meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px;padding:4px 2px}
+#seom-meta-box .seom-field label{display:block;font-weight:700;font-size:12px;margin-bottom:2px;color:#1c2033}
+#seom-meta-box .seom-field.full{grid-column:1/-1}
+#seom-meta-box input,#seom-meta-box textarea,#seom-meta-box select{
+  width:100%;border-radius:8px;border:1px solid #dcdce8;padding:8px 10px;font-size:13px;
+}
+#seom-meta-box input:focus,#seom-meta-box textarea:focus,#seom-meta-box select:focus{
+  border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.16);outline:none;
+}
+#seom-meta-box .seom-counter{font-size:11px;color:#9498ad;margin-top:4px}
+#seom-meta-box .seom-serp{border:1px solid #e5e7f3;border-radius:12px;padding:14px 16px;margin-top:16px;background:#fbfbfe}
+#seom-meta-box .seom-serp-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9498ad;font-weight:800;margin-bottom:6px}
+#seom-meta-box .seom-serp-title{font-size:17px;color:#1a0dab}
+#seom-meta-box .seom-serp-url{font-size:12px;color:#188038;margin:2px 0}
+#seom-meta-box .seom-serp-desc{font-size:13px;line-height:1.5;color:#4d5156}
+#seom-meta-box .seom-analysis{margin-top:16px;padding-top:16px;border-top:1px solid #eef0f9}
+#seom-meta-box .seom-analysis-score{font-size:15px;font-weight:700;margin-top:10px}
+#seom-meta-box .seom-analysis-result{font-size:12.5px;color:#6b7089;line-height:1.6}
+#seom-meta-box .button{border-radius:999px;font-weight:700;font-size:12.5px}

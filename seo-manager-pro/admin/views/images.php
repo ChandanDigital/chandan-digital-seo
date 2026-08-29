@@ -1,0 +1,1 @@
+<div class="seom-panel"><h2>Image SEO</h2><p>Scan the media library for images without ALT text.</p><button type="button" class="button button-primary" id="seom-image-scan">Scan Images</button><div id="seom-image-results"></div></div>
