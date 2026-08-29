@@ -54,8 +54,31 @@ final class SEO_Manager_Updater {
             'User-Agent' => 'Chandan-Digital-SEO/'.SEOM_VERSION,
         ];
         $s = self::settings();
-        if (!empty($s['token'])) $h['Authorization'] = 'Bearer '.trim((string)$s['token']);
+        $token = trim(self::decrypt((string)$s['token']));
+        if ($token !== '') $h['Authorization'] = 'Bearer '.$token;
         return $h;
+    }
+
+    // The GitHub token can carry repo scope, so it is encrypted at rest the
+    // same way the Google/Bing credentials are (AES-256-CBC keyed from the
+    // site's own WordPress salts), instead of being stored as plain text in
+    // wp_options like the rest of this settings array.
+    private static function key(): string { return hash('sha256', wp_salt('auth') . wp_salt('secure_auth'), true); }
+    private static function encrypt(string $value): string {
+        if ($value === '') return '';
+        if (!function_exists('openssl_encrypt')) return base64_encode($value);
+        $iv = random_bytes(16);
+        $cipher = openssl_encrypt($value, 'aes-256-cbc', self::key(), OPENSSL_RAW_DATA, $iv);
+        return base64_encode($iv . $cipher);
+    }
+    private static function decrypt(string $value): string {
+        if ($value === '') return '';
+        if (!function_exists('openssl_decrypt')) return (string)base64_decode($value);
+        $raw = base64_decode($value, true);
+        if (!$raw || strlen($raw) < 17) return '';
+        $iv = substr($raw, 0, 16); $cipher = substr($raw, 16);
+        $out = openssl_decrypt($cipher, 'aes-256-cbc', self::key(), OPENSSL_RAW_DATA, $iv);
+        return is_string($out) ? $out : '';
     }
 
     private static function latest_release() {
@@ -268,7 +291,7 @@ final class SEO_Manager_Updater {
         $s['repo'] = sanitize_key(wp_unslash($_POST['repo'] ?? ''));
         $s['branch'] = sanitize_key(wp_unslash($_POST['branch'] ?? 'main')) ?: 'main';
         $s['asset'] = sanitize_file_name(wp_unslash($_POST['asset'] ?? ''));
-        if (isset($_POST['token']) && trim((string)wp_unslash($_POST['token'])) !== '') $s['token'] = sanitize_text_field(wp_unslash($_POST['token']));
+        if (isset($_POST['token']) && trim((string)wp_unslash($_POST['token'])) !== '') $s['token'] = self::encrypt(sanitize_text_field(wp_unslash($_POST['token'])));
         $s['auto_update'] = !empty($_POST['auto_update']) ? 1 : 0;
         $s['backup_retention'] = min(20, max(1, absint($_POST['backup_retention'] ?? 3)));
         update_option(self::OPTION, $s, false);
