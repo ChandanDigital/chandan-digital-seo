@@ -3,10 +3,13 @@ Contributors: seomanager
 Tags: seo, search console, sitemap, schema, redirects, 404, woocommerce, elementor
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 4.9.3
+Stable tag: 4.9.4
 License: GPLv2 or later
 
 Advanced SEO Manager for WordPress by Chandan Digital with Google Search Console integration, SEO analysis, redirects, 404 tools, XML sitemaps, schema and bulk operations.
+
+= 4.9.4 =
+* Fixed: a GitHub release published without an attached .zip asset fell back to GitHub's auto-generated zipball, which unpacks to an "owner-repo-commit" folder instead of the plugin's own folder name. WordPress installs a plugin into whatever folder the archive contains, so the update would have installed as a separate plugin copy, leaving the original deactivated and its settings orphaned. The package folder is now normalised to the installed plugin directory before install.
 
 = 4.9.3 =
 * Fixed data loss: saving the SEO Automation screen silently wiped every SEO Tweaks setting. Both screens submit to the same handler, which rewrote all of its option keys on every save — because an unchecked checkbox and a field the form never rendered look identical when submitted, saving Automation blanked the Google/Bing/Yandex/Baidu verification IDs, the Analytics Measurement ID, the llms.txt notes, and reset every SEO Tweaks toggle (nofollow external links, open external links in a new tab, noindex empty archives, attachment redirects, strip category base, llms.txt) to off. Each form now declares its own scope and only writes the settings it actually shows.

@@ -17,6 +17,7 @@ final class SEO_Manager_Updater {
         add_filter('auto_update_plugin', [__CLASS__, 'auto_update'], 20, 2);
         add_filter('upgrader_pre_install', [__CLASS__, 'backup_before_install'], 20, 2);
         add_filter('upgrader_pre_download', [__CLASS__, 'pre_download'], 10, 4);
+        add_filter('upgrader_source_selection', [__CLASS__, 'source_selection'], 10, 4);
         add_action('upgrader_process_complete', [__CLASS__, 'after_update'], 20, 2);
         add_action('admin_post_seom_update_save', [__CLASS__, 'save_settings']);
         add_action('admin_post_seom_update_check', [__CLASS__, 'manual_check']);
@@ -164,6 +165,31 @@ final class SEO_Manager_Updater {
 
     private static function plugin_basename(): string {
         return plugin_basename(SEOM_FILE);
+    }
+
+    /**
+     * Forces the extracted package folder to match the installed plugin
+     * folder name.
+     *
+     * A GitHub release without an attached .zip asset falls back to
+     * zipball_url, whose archive unpacks to "<owner>-<repo>-<commit>/"
+     * rather than the plugin's own directory name. WordPress installs a
+     * plugin into whatever folder the archive contains, so without this the
+     * update would land in a new directory, leaving the original copy
+     * deactivated and every stored setting orphaned. Renaming the source
+     * before install keeps the update in place.
+     */
+    public static function source_selection($source, $remote_source, $upgrader, $hook_extra = null) {
+        if (!is_array($hook_extra) || empty($hook_extra['plugin']) || $hook_extra['plugin'] !== self::plugin_basename()) return $source;
+        global $wp_filesystem;
+        if (!$wp_filesystem) return $source;
+        $desired = trailingslashit($remote_source) . dirname(self::plugin_basename());
+        if (untrailingslashit($source) === $desired) return $source;
+        if ($wp_filesystem->exists($desired)) $wp_filesystem->delete($desired, true);
+        if (!$wp_filesystem->move($source, $desired)) {
+            return new WP_Error('seom_source_rename', 'Could not normalise the update package folder name.');
+        }
+        return trailingslashit($desired);
     }
 
     public static function inject_update($transient) {
