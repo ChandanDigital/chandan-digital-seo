@@ -3,10 +3,17 @@ Contributors: seomanager
 Tags: seo, search console, sitemap, schema, redirects, 404, woocommerce, elementor
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 4.9.2
+Stable tag: 4.9.3
 License: GPLv2 or later
 
 Advanced SEO Manager for WordPress by Chandan Digital with Google Search Console integration, SEO analysis, redirects, 404 tools, XML sitemaps, schema and bulk operations.
+
+= 4.9.3 =
+* Fixed data loss: saving the SEO Automation screen silently wiped every SEO Tweaks setting. Both screens submit to the same handler, which rewrote all of its option keys on every save — because an unchecked checkbox and a field the form never rendered look identical when submitted, saving Automation blanked the Google/Bing/Yandex/Baidu verification IDs, the Analytics Measurement ID, the llms.txt notes, and reset every SEO Tweaks toggle (nofollow external links, open external links in a new tab, noindex empty archives, attachment redirects, strip category base, llms.txt) to off. Each form now declares its own scope and only writes the settings it actually shows.
+* Fixed: saving SEO Automation redirected to the SEO Tweaks screen instead of staying on SEO Automation.
+* Fixed invisible text on the Google & Indexing, Instant Indexing, Bing & IndexNow and Business Profile screens. The hero banner is marked up with both `seom-panel` and `seom-google-hero`; the later `seom-panel` rule overrode the hero's dark gradient at equal CSS specificity, leaving white heading text, body copy and the connection status pill on a white background.
+* Fixed the OAuth redirect URI block rendering as pale text on a pale background — the global `code` styling outranked the dark `.seom-code-block` rule.
+* Improved admin text contrast: the faint text token used for card captions and counters measured 2.86:1 against white, below the WCAG AA 4.5:1 minimum, and is now 4.6:1. Several low-opacity labels on dark backgrounds were also raised.
 
 = 4.9.2 =
 * Security fix: JSON-LD output (Article/Product/LocalBusiness/WebPage/breadcrumb/schema-template/video schema) no longer disables slash-escaping, closing a stored-XSS `</script>` breakout via post titles, author display names, descriptions and schema template variables.

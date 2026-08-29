@@ -21,18 +21,61 @@ final class SEO_Manager_Advanced_Features {
         $keys=['google_verification','bing_verification','yandex_verification','baidu_verification','analytics_id','nofollow_external','open_external_blank','nofollow_image_links','noindex_empty_archives','redirect_attachments','redirect_orphan_attachments','orphan_attachment_url','strip_category_base','llms_enabled','llms_extra','indexnow_enabled','indexnow_key','image_auto_alt','image_auto_title','video_auto_schema'];
         foreach($keys as $key) register_setting('seom_advanced',$key);
     }
+    /**
+     * Which option keys each form on the admin side actually owns.
+     *
+     * Both the "SEO Tweaks" screen and the "SEO Automation" screen submit to
+     * this same handler, but they render different subsets of the fields.
+     * Saving must therefore only touch the keys belonging to the submitting
+     * form: an unchecked checkbox and a field the form never rendered look
+     * identical in $_POST, so saving every key from a partial form would
+     * blank out settings the user could not even see.
+     */
+    private const SCOPES = [
+        'automation' => [
+            'text' => [],
+            'bool' => ['image_auto_alt','image_auto_title','video_auto_schema'],
+            'page' => ['page'=>'seo-manager-content','subtab'=>'automation'],
+        ],
+        'tweaks' => [
+            'text' => ['google_verification','bing_verification','yandex_verification','baidu_verification','analytics_id','llms_extra'],
+            'bool' => ['nofollow_external','open_external_blank','nofollow_image_links','noindex_empty_archives','redirect_attachments','redirect_orphan_attachments','strip_category_base','llms_enabled'],
+            'page' => ['page'=>'seo-manager-technical','subtab'=>'tweaks'],
+        ],
+    ];
+
+    private static function scope(string $scope): array {
+        return self::SCOPES[$scope] ?? self::SCOPES['tweaks'];
+    }
+
     public static function save_admin(): void {
         if (!current_user_can('manage_options') || !check_admin_referer('seom_save_advanced')) wp_die('Unauthorized.');
-        self::save($_POST);
+        $scope = sanitize_key(wp_unslash($_POST['seom_scope'] ?? 'tweaks'));
+        if (!isset(self::SCOPES[$scope])) $scope = 'tweaks';
+        self::save($_POST, $scope);
         flush_rewrite_rules(false);
-        wp_safe_redirect(add_query_arg(['page'=>'seo-manager-technical','subtab'=>'tweaks','advanced_saved'=>1],admin_url('admin.php')));
+        // Return to the screen the form was actually submitted from, instead of
+        // always landing on SEO Tweaks.
+        wp_safe_redirect(add_query_arg(self::scope($scope)['page'] + ['advanced_saved'=>1], admin_url('admin.php')));
         exit;
     }
 
-    public static function save(array $post): void {
-        $text=['google_verification','bing_verification','yandex_verification','baidu_verification','analytics_id','llms_extra'];
-        foreach($text as $k) seom_update($k, $k==='llms_extra'?sanitize_textarea_field(wp_unslash($post[$k]??'')):sanitize_text_field(wp_unslash($post[$k]??''))); if(array_key_exists('orphan_attachment_url',$post)) seom_update('orphan_attachment_url',seom_normalize_destination($post['orphan_attachment_url']??''));
-        foreach(['nofollow_external','open_external_blank','nofollow_image_links','noindex_empty_archives','redirect_attachments','redirect_orphan_attachments','strip_category_base','llms_enabled','image_auto_alt','image_auto_title','video_auto_schema'] as $k) seom_update($k, isset($post[$k])?1:0);
+    /**
+     * @param string $scope Which form is saving. Defaults to the full legacy
+     *                      key set so any existing caller keeps working.
+     */
+    public static function save(array $post, string $scope = 'all'): void {
+        if ($scope === 'all') {
+            $text = array_merge(self::SCOPES['tweaks']['text'], self::SCOPES['automation']['text']);
+            $bool = array_merge(self::SCOPES['tweaks']['bool'], self::SCOPES['automation']['bool']);
+        } else {
+            $config = self::scope($scope);
+            $text = $config['text'];
+            $bool = $config['bool'];
+        }
+        foreach($text as $k) seom_update($k, $k==='llms_extra'?sanitize_textarea_field(wp_unslash($post[$k]??'')):sanitize_text_field(wp_unslash($post[$k]??'')));
+        if(array_key_exists('orphan_attachment_url',$post)) seom_update('orphan_attachment_url',seom_normalize_destination($post['orphan_attachment_url']??''));
+        foreach($bool as $k) seom_update($k, isset($post[$k])?1:0);
     }
     public static function verification_tags(): void {
         if(is_admin()) return;

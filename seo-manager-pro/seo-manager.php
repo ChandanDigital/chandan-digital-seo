@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Chandan Digital SEO
  * Description: Chandan Digital SEO is an advanced all-in-one SEO toolkit for WordPress with on-page SEO, technical SEO, schema, sitemap, redirects, 404 monitoring, bulk editor, audits, social SEO, local SEO, WooCommerce and indexing integrations.
- * Version: 4.9.2
+ * Version: 4.9.3
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * Author: Chandan Digital
  * Text Domain: seo-manager
  */
 if (!defined('ABSPATH')) exit;
-define('SEOM_VERSION','4.9.2');
+define('SEOM_VERSION','4.9.3');
 define('SEOM_FILE',__FILE__);
 define('SEOM_DIR',plugin_dir_path(__FILE__));
 define('SEOM_URL',plugin_dir_url(__FILE__));

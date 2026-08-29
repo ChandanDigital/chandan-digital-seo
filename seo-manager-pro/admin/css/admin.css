@@ -12,8 +12,11 @@
   --seom-border:#e5e7f3;
   --seom-border-soft:#eef0f9;
   --seom-text:#1c2033;
+  /* Both muted tones are kept at or above the WCAG AA 4.5:1 ratio against the
+     white surface. --seom-text-faint was #9498ad, which measured only 2.86:1
+     and made small captions, counters and card sub-labels hard to read. */
   --seom-text-muted:#6b7089;
-  --seom-text-faint:#9498ad;
+  --seom-text-faint:#6f7488;
   --seom-success:#0f9d58;
   --seom-success-bg:#e6f8ee;
   --seom-warn:#b5720a;
@@ -63,7 +66,7 @@
   font-weight:800;font-size:16px;letter-spacing:.02em;color:#101235;
   box-shadow:0 6px 16px -4px rgba(0,0,0,.35);
 }
-.seom-brandname{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.68);font-weight:700}
+.seom-brandname{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.8);font-weight:700}
 .seom-productname{font-size:17px;font-weight:700;line-height:1.25;color:#fff}
 .seom-brandtag{font-size:12.5px;color:rgba(255,255,255,.72);margin-top:1px}
 .seom-brandmeta{display:flex;align-items:center;gap:10px;flex:0 0 auto}
@@ -167,10 +170,20 @@
 /* ---------------------------------------------------------------------
    Hero banners (dashboard + Google/indexing intro cards)
    --------------------------------------------------------------------- */
-.seom-hero,.seom-google-hero{
+/* The hero markup is written as class="seom-panel seom-google-hero", and
+   .seom-panel (defined further down this file) sets a white background at the
+   same specificity — so the later .seom-panel rule was winning and flattening
+   the hero to white while its child text kept color:#fff, rendering the
+   heading, body copy and status pill invisible. The compound
+   .seom-panel.seom-hero / .seom-panel.seom-google-hero selectors raise the
+   specificity so the hero keeps its gradient regardless of rule order, while
+   the bare class selectors keep standalone hero markup working. */
+.seom-hero,.seom-google-hero,
+.seom-panel.seom-hero,.seom-panel.seom-google-hero{
   display:flex;align-items:center;justify-content:space-between;gap:20px;
   background:linear-gradient(120deg,#312a86 0%,#4338ca 55%,#4f8ef0 100%);
   color:#fff;border-radius:var(--seom-radius-lg);
+  border:1px solid transparent;
   padding:26px 28px;margin:0 0 20px;position:relative;overflow:hidden;
   box-shadow:var(--seom-shadow);
 }
@@ -179,9 +192,14 @@
   background:radial-gradient(360px 220px at 100% 0%,rgba(6,182,212,.35),transparent 62%);
 }
 .seom-hero>*,.seom-google-hero>*{position:relative;z-index:1}
-.seom-hero h1,.seom-google-hero h2{color:#fff;margin:2px 0 6px;font-size:22px}
-.seom-hero p,.seom-google-hero p{color:rgba(255,255,255,.78);margin:0;max-width:600px;font-size:13.5px;line-height:1.55}
+.seom-hero h1,.seom-hero h2,.seom-google-hero h1,.seom-google-hero h2,
+.seom-panel.seom-hero h1,.seom-panel.seom-hero h2,
+.seom-panel.seom-google-hero h1,.seom-panel.seom-google-hero h2{color:#fff;margin:2px 0 6px;font-size:22px}
+.seom-hero p,.seom-google-hero p{color:rgba(255,255,255,.82);margin:0;max-width:600px;font-size:13.5px;line-height:1.55}
 .seom-hero .seom-eyebrow,.seom-google-hero .seom-eyebrow{color:#a9ffee}
+/* Inline <code> inside a hero sits on the dark gradient, so the light global
+   code chip styling would be unreadable there. */
+.seom-hero code,.seom-google-hero code{background:rgba(255,255,255,.16);color:#eef0ff}
 
 .seom-score-orb{
   --score:70;
@@ -202,7 +220,7 @@
 }
 .seom-score-orb span{
   position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
-  font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.7);
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.85);
   white-space:nowrap;
 }
 
@@ -442,9 +460,14 @@
 .seom-info-box strong{font-size:14px}
 .seom-info-box a{font-size:13px;word-break:break-all}
 
-.seom-code-block{
+/* .seom-wrap code (0,1,1) outranked the single-class .seom-code-block (0,1,0),
+   so the block kept its light global chip background while still using the
+   light-on-dark text colour — the OAuth redirect URI rendered as pale text on
+   a pale panel. Matching the element in the selector restores the dark block. */
+code.seom-code-block,.seom-code-block{
   display:block;background:#181737;color:#c9d1ff;border-radius:var(--seom-radius-sm);
   padding:12px 14px;font-size:12.5px;margin:10px 0;overflow-x:auto;
+  word-break:break-all;
 }
 .seom-code-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
 .seom-code-list code{background:#181737;color:#c9d1ff;padding:6px 12px;border-radius:8px;font-size:12px}
