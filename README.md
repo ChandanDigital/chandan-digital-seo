@@ -1,6 +1,22 @@
-# Chandan Digital - SEO Meta Tags
+# Chandan Digital - Custom SEO Meta Tags Plugin
 
-Copy and paste the HTML code block below directly into the `<head>` section of your website's HTML file:
+This repository contains the custom SEO Meta Tags configuration built specifically for **[Chandan Digital](https://chandandigital.com)**—a premier digital marketing and web development agency based in Kolkata. 
+
+Integrating this code into your website's HTML setup ensures optimal search engine indexing, social media visibility, and local search presence.
+
+---
+
+## 🚀 Features Included
+* **Primary Meta Tags**: Optimised `title`, `description`, and `keywords` tailored for Kolkata's digital market.
+* **Open Graph Protocol**: Fully compatible with **Facebook** and **Instagram** for structured social sharing.
+* **Twitter Cards**: Custom layout for standard and large-image previews on **X / Twitter**.
+* **Search Engine Instructions**: Setup with `index, follow` directives to guarantee indexing.
+
+---
+
+## 🛠️ How to Use
+
+Copy the HTML code block below and paste it directly into the `<head>` section of your website's root HTML file:
 
 ```html
 <!-- Primary Meta Tags -->
@@ -27,6 +43,11 @@ Copy and paste the HTML code block below directly into the `<head>` section of y
 <meta property="twitter:image" content="https://chandandigital.comwp-content/uploads/your-default-share-image.jpg">
 ```
 
-### 📌 Quick Instructions:
-* **Image URL**: Meta tags line number `15` and `21` e thaka `your-default-share-image.jpg` link ti bodle apnar original banner ba logo link bosiye deben.
-* **WordPress**: Apni jodi WordPress use koren, tahole kono code edit na kore direct **Yoast SEO** ba **Rank Math** plugin er bitorei Title ebong Description ti bosiye dite paren.
+> 📌 **Note**: Remember to replace the placeholder `your-default-share-image.jpg` on lines 15 and 21 with the actual hosted URL of your company logo or social sharing banner image.
+
+---
+
+## 📈 Agency Info & Contact
+* **Official Website**: [https://chandandigital.com](https://chandandigital.com)
+* **Developer/Founder**: Chandan Mandal
+* **Location**: Kalikapur, Eastern Metropolitan Bypass, Kolkata, West Bengal 700075
